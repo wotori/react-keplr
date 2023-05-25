@@ -4,14 +4,12 @@ import {
   CosmWasmClient,
 } from "@cosmjs/cosmwasm-stargate";
 import { connectKeplr } from "./keplr";
-import { ISigningCosmWasmClientContext } from "./models";
+import { ISigningCosmWasmClientContext, NetworkConfig } from "./models";
 import { GasPrice } from "@cosmjs/stargate";
 
-const PUBLIC_RPC_ENDPOINT = process.env
-  .NEXT_PUBLIC_CHAIN_RPC_ENDPOINT as string;
-const PUBLIC_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID;
-
-export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
+export const useSigningCosmWasmClient = (
+  networkConfig: NetworkConfig
+): ISigningCosmWasmClientContext => {
   const [client, setClient] = useState<CosmWasmClient | null>(null);
   const [signingClient, setSigningClient] =
     useState<SigningCosmWasmClient | null>(null);
@@ -24,14 +22,14 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
 
     try {
       setCounter(counter + 1);
-      connectKeplr(counter + 1);
+      connectKeplr(counter + 1, networkConfig);
 
       // enable website to access keplr
-      await (window as any).keplr.enable(PUBLIC_CHAIN_ID);
+      await (window as any).keplr.enable(networkConfig.chainId);
 
       // get offline signer for signing txs
       const offlineSigner = await (window as any).getOfflineSigner(
-        PUBLIC_CHAIN_ID
+        networkConfig.chainId
       );
 
       let gasPrice = GasPrice.fromString(
@@ -39,7 +37,7 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
       );
       setSigningClient(
         await SigningCosmWasmClient.connectWithSigner(
-          PUBLIC_RPC_ENDPOINT, // TODO: take from config chain.info.js
+          networkConfig.rpc, // TODO: take from config chain.info.js
           offlineSigner,
           { gasPrice: gasPrice }
         )
@@ -55,9 +53,9 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
     }
 
     try {
-      setClient(await CosmWasmClient.connect(PUBLIC_RPC_ENDPOINT));
+      setClient(await CosmWasmClient.connect(networkConfig.rpc));
     } catch (error: any) {
-      alert(`Unable connect to: ${PUBLIC_RPC_ENDPOINT}`);
+      alert(`Unable connect to: ${networkConfig.rpc}`);
     }
   };
 
@@ -81,5 +79,6 @@ export const useSigningCosmWasmClient = (): ISigningCosmWasmClientContext => {
     connectWallet,
     disconnect,
     client,
+    networkConfig,
   };
 };

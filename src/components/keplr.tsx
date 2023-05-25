@@ -1,6 +1,6 @@
+import { NetworkConfig } from "./models";
+
 // https://docs.keplr.app/api/suggest-chain.html
-import fs from "fs";
-const chainInfo = JSON.parse(fs.readFileSync("chain-info.json", "utf8"));
 export function convertFromMicroDenom(denom: string) {
   return denom?.substring(1).toUpperCase();
 }
@@ -12,7 +12,10 @@ interface CosmosKeplrWindow extends Window {
 
 declare let window: CosmosKeplrWindow;
 
-export const connectKeplr = async (counter: number) => {
+export const connectKeplr = async (
+  counter: number,
+  chainInfo: NetworkConfig
+) => {
   if (!window.getOfflineSigner || !window.keplr) {
     if (counter > 1) {
       alert(

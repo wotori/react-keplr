@@ -1,7 +1,7 @@
 import React from "react";
 import { createContext, useContext, ReactNode } from "react";
 import { useSigningCosmWasmClient } from "./hooks";
-import { ISigningCosmWasmClientContext } from "./models";
+import { ISigningCosmWasmClientContext, NetworkConfig } from "./models";
 
 const CosmWasmContext = createContext<ISigningCosmWasmClientContext>({
   walletAddress: "",
@@ -11,6 +11,7 @@ const CosmWasmContext = createContext<ISigningCosmWasmClientContext>({
   error: null,
   connectWallet: () => {},
   disconnect: () => {},
+  networkConfig: null,
 });
 
 const { Provider } = CosmWasmContext;
@@ -20,9 +21,11 @@ export const useSigningClient = (): ISigningCosmWasmClientContext =>
 
 export const SigningCosmWasmProvider = ({
   children,
+  networkConfig,
 }: {
   children: ReactNode;
+  networkConfig: NetworkConfig;
 }) => {
-  const value = useSigningCosmWasmClient();
+  const value = useSigningCosmWasmClient(networkConfig);
   return <Provider value={value}>{children}</Provider>;
 };

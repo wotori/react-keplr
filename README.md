@@ -2,6 +2,8 @@
 
 This project provides integration between React and Keplr Wallet for blockchain connection. With this project, you can use Keplr Wallet across all dapp components and perform basic functions such as sending signed transactions and querying the blockchain.
 
+A git repository is an early alpha version, which means that it is still in its experimental stages and may contain bugs or issues that have not yet been addressed.Please use with caution.
+
 ## Installation
 
 To install this project, simply run:
@@ -12,15 +14,18 @@ npm install react-keplr
 
 ## Basic Usage
 
-To use the Keplr Wallet in your app, wrap your app with the `SigningCosmWasmProvider` component. This will give you access to custom hooks that allow you to call the wallet and execute transactions in any space.
+To use the Keplr Wallet in your dApp, wrap your app with the `SigningCosmWasmProvider` component. This will give you access to custom hooks that allow you to call the wallet and execute transactions in any space.
 
 
 ```jsx
+import { SigningCosmWasmProvider } from "react-keplr";
+import chainInfo from "../chain.info";
+
 export default function App(props: Properties) {
   const { Component, pageProps } = props;
 
   return (
-    <SigningCosmWasmProvider>
+    <SigningCosmWasmProvider networkConfig={chainInfo}>
       <Head>
         <title>NFText</title>
       </Head>
@@ -53,7 +58,7 @@ const { connectWallet, signingClient } = useSigningClient();
   }, []);
 
   ...
-
+  import { calculateFee } from "@cosmjs/stargate";  // TODO: integrate into library + config
   function handleMinting() {
     signingClient
       ?.execute(

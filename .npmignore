@@ -1,0 +1,18 @@
+src/
+webpack.config.js
+babel.config.js
+
+# Tests
+__tests__/
+test/
+*.test.js
+
+# Development files
+node_modules/
+*.log
+*.json
+
+# Configuration files
+.eslintrc
+.prettierrc
+.babelrc

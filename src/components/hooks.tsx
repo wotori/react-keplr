@@ -6,6 +6,9 @@ import {
 import { connectKeplr } from "./keplr";
 import { ISigningCosmWasmClientContext, NetworkConfig } from "./models";
 import { GasPrice } from "@cosmjs/stargate";
+import { Window as KeplrWindow } from "@keplr-wallet/types";
+
+declare let window: KeplrWindow;
 
 export const useSigningCosmWasmClient = (
   networkConfig: NetworkConfig
@@ -17,44 +20,47 @@ export const useSigningCosmWasmClient = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [counter, setCounter] = useState(0);
+
   const connectWallet = async () => {
     setLoading(true);
 
-    try {
-      setCounter(counter + 1);
-      connectKeplr(counter + 1, networkConfig);
+    if (window.keplr) {
+      try {
+        setCounter(counter + 1);
+        connectKeplr(counter + 1, networkConfig);
 
-      // enable website to access keplr
-      await (window as any).keplr.enable(networkConfig.chainId);
+        // enable website to access keplr
+        await window.keplr.enable(networkConfig.chainId);
 
-      // get offline signer for signing txs
-      const offlineSigner = await (window as any).getOfflineSigner(
-        networkConfig.chainId
-      );
+        // get offline signer for signing txs
+        const offlineSigner = await window.keplr.getOfflineSigner(
+          networkConfig.chainId
+        );
 
-      let gasPrice = GasPrice.fromString(
-        "0.002" + "uconst" // TODO: take from config chain.info.js
-      );
-      setSigningClient(
-        await SigningCosmWasmClient.connectWithSigner(
-          networkConfig.rpc, // TODO: take from config chain.info.js
-          offlineSigner,
-          { gasPrice: gasPrice }
-        )
-      );
+        const gasPrice = GasPrice.fromString(
+          "0.002" + "uconst" // TODO: take from config chain.info.js
+        );
+        setSigningClient(
+          await SigningCosmWasmClient.connectWithSigner(
+            networkConfig.rpc, // TODO: take from config chain.info.js
+            offlineSigner,
+            { gasPrice: gasPrice }
+          )
+        );
 
-      // get user address
-      const [{ address }] = await offlineSigner.getAccounts();
-      setWalletAddress(address);
+        // get user address
+        const [{ address }] = await offlineSigner.getAccounts();
+        setWalletAddress(address);
 
-      setLoading(false);
-    } catch (error: any) {
-      setError(error);
+        setLoading(false);
+      } catch (error: unknown) {
+        console.log("Got error", error);
+        setError(null); // TODO: pass real error
+      }
     }
-
     try {
       setClient(await CosmWasmClient.connect(networkConfig.rpc));
-    } catch (error: any) {
+    } catch (error: unknown) {
       alert(`Unable connect to: ${networkConfig.rpc}`);
     }
   };

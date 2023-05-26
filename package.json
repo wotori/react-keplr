@@ -1,6 +1,6 @@
 {
   "name": "react-keplr",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "A package that provides integration between React and Keplr Wallet for blockchain connection. With this package, you can easily connect to Keplr Wallet and perform basic functions such as sending signed transactions and querying the blockchain. The package uses React context to provide a simple and intuitive API for interacting with Keplr Wallet. It also includes custom hooks for accessing wallet information and executing transactions.",
   "author": "Wotori Movako",
   "main": "dist/react-keplr.cjs.js",
@@ -32,10 +32,15 @@
     "@cosmjs/cosmwasm-stargate": "^0.30.1",
     "@cosmjs/stargate": "^0.30.1",
     "@emotion/babel-plugin": "^11.11.0",
+    "@keplr-wallet/types": "^0.11.63",
     "@preconstruct/cli": "^2.7.0",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
     "core-js": "3",
+    "eslint": "^8.41.0",
+    "eslint-plugin-react": "^7.32.2",
     "react": "^18.2.0",
     "ts-loader": "^9.4.3",
     "typescript": "^5.0.4",
@@ -45,6 +50,7 @@
     "build": "rm -rf dist && NODE_ENV=production babel src/ --out-dir dist --copy-files",
     "build2": "rm -rf dist && tsc",
     "buildp": "rm -rf dist && preconstruct build",
-    "publish": "publish:react-keplr"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "type-check": "tsc --noEmit"
   }
 }

@@ -9,8 +9,8 @@ const CosmWasmContext = createContext<ISigningCosmWasmClientContext>({
   signingClient: null,
   loading: false,
   error: null,
-  connectWallet: () => {},
-  disconnect: () => {},
+  connectWallet: null,
+  disconnect: null,
   networkConfig: null,
 });
 

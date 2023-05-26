@@ -48,13 +48,16 @@ export interface NetworkConfig {
   features: string[];
 }
 
+type ConnectWalletFunction = () => Promise<void>;
+type DisconnectFunction = () => void;
+
 export interface ISigningCosmWasmClientContext {
   walletAddress: string;
   client: CosmWasmClient | null;
   signingClient: SigningCosmWasmClient | null;
   loading: boolean;
-  error: any;
-  connectWallet: any;
-  disconnect: Function;
+  error: null;
+  connectWallet: ConnectWalletFunction | null;
+  disconnect: DisconnectFunction | null;
   networkConfig: NetworkConfig | null;
 }

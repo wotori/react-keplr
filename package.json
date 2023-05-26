@@ -1,11 +1,11 @@
 {
   "name": "react-keplr",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "A package that provides integration between React and Keplr Wallet for blockchain connection. With this package, you can easily connect to Keplr Wallet and perform basic functions such as sending signed transactions and querying the blockchain. The package uses React context to provide a simple and intuitive API for interacting with Keplr Wallet. It also includes custom hooks for accessing wallet information and executing transactions.",
   "author": "Wotori Movako",
   "main": "dist/react-keplr.cjs.js",
   "module": "dist/react-keplr.esm.js",
-  "typings": "dist/react-keplr.d.ts",
+  "typings": "dist/react-keplr.cjs.d.ts",
   "license": "MIT",
   "keywords": [
     "react",

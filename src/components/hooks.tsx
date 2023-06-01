@@ -4,14 +4,14 @@ import {
   CosmWasmClient,
 } from "@cosmjs/cosmwasm-stargate";
 import { connectKeplr } from "./keplr";
-import { ISigningCosmWasmClientContext, NetworkConfig } from "./models";
+import { ISigningCosmWasmClientContext } from "./models";
 import { GasPrice } from "@cosmjs/stargate";
-import { Window as KeplrWindow } from "@keplr-wallet/types";
+import { ChainInfo, Window as KeplrWindow } from "@keplr-wallet/types";
 
 declare let window: KeplrWindow;
 
 export const useSigningCosmWasmClient = (
-  networkConfig: NetworkConfig
+  networkConfig: ChainInfo
 ): ISigningCosmWasmClientContext => {
   const [client, setClient] = useState<CosmWasmClient | null>(null);
   const [signingClient, setSigningClient] =
@@ -37,14 +37,11 @@ export const useSigningCosmWasmClient = (
           networkConfig.chainId
         );
 
-        const gasPrice = GasPrice.fromString(
-          "0.002" + "uconst" // TODO: take from config chain.info.js
-        );
         setSigningClient(
           await SigningCosmWasmClient.connectWithSigner(
             networkConfig.rpc, // TODO: take from config chain.info.js
             offlineSigner,
-            { gasPrice: gasPrice }
+            { gasPrice: GasPrice.fromString("0.02aconst") }
           )
         );
 

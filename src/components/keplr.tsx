@@ -1,5 +1,4 @@
-import { NetworkConfig } from "./models";
-import { Window as KeplrWindow } from "@keplr-wallet/types";
+import { ChainInfo, Window as KeplrWindow } from "@keplr-wallet/types";
 
 // https://docs.keplr.app/api/suggest-chain.html
 export function convertFromMicroDenom(denom: string) {
@@ -10,7 +9,7 @@ declare let window: KeplrWindow;
 
 export const connectKeplr = async (
   counter: number,
-  chainInfo: NetworkConfig
+  chainInfo: ChainInfo
 ) => {
   if (!window.getOfflineSigner || !window.keplr) {
     if (counter > 1) {

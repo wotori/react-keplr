@@ -1,7 +1,8 @@
 import React from "react";
 import { createContext, useContext, ReactNode } from "react";
 import { useSigningCosmWasmClient } from "./hooks";
-import { ISigningCosmWasmClientContext, NetworkConfig } from "./models";
+import { ISigningCosmWasmClientContext } from "./models";
+import { ChainInfo } from "@keplr-wallet/types";
 
 const CosmWasmContext = createContext<ISigningCosmWasmClientContext>({
   walletAddress: "",
@@ -24,7 +25,7 @@ export const SigningCosmWasmProvider = ({
   networkConfig,
 }: {
   children: ReactNode;
-  networkConfig: NetworkConfig;
+  networkConfig: ChainInfo;
 }) => {
   const value = useSigningCosmWasmClient(networkConfig);
   return <Provider value={value}>{children}</Provider>;
